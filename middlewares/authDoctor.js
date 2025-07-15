@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 const authDoctor = async (req, res, next ) => { // next is callback function , as it is middleware that's why adding next
   try {
     const { dtoken } = req.headers; // Get token from headers
-    if (!token) {
+    if (!dtoken) {
       return res.json({ success: false, message: "Not authorized Login Again" });
     }
 

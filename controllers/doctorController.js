@@ -33,23 +33,27 @@ const doctorList = async (req, res) => {
 const loginDoctor = async (req, res) => {
   try {
     const { email, password } = req.body;
+
     const doctor = await doctorModel.findOne({ email });
+
     if (!doctor) {
       return res.json({ success: false, message: "Invalid credentials" });
     }
-    const isMatch = await bcrypt.compare(password, doctor.password);
-    if (isMatch) {
-      const token = jwt.sign({ id: doctor._id }, process.env.JWT_SECRET);
 
-      res.json({ success: true, token });
+    // Direct string comparison (no bcrypt)
+    if (password === doctor.password) {
+      const token = jwt.sign({ id: doctor._id }, process.env.JWT_SECRET);
+      return res.json({ success: true, token, message: "Login successful",token });
     } else {
-      res.json({ success: false, message: "Invalid credentials" });
+      return res.json({ success: false, message: "Invalid credentials" });
     }
+
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: error.message });
   }
 };
+
 
 //api to get doctor appointment for doctor panel
 const appointmentsDoctor = async (req, res) => {
@@ -134,7 +138,8 @@ const doctorProfile = async (req, res) => {
   try {
     const { docId } = req.body;
     const profileData = await doctorModel.findById(docId).select("-password");
-
+  console.log(docId);
+  console.log(profileData)
     res.json({ success: true, profileData });
   } catch (error) {
     console.log(error);

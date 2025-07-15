@@ -19,9 +19,8 @@ const doctorSchema = new mongoose.Schema(
     slots_booked: { type: Object, default: {} },
   },
   { minimize: false }
-); // to store any object in empty data we add
+); 
 
 const doctorModel =
-  mongoose.models.doctor || mongoose.model("doctor", doctorSchema); //whenever we start project it will get excuted and it will create the model for us multiple time
-
+  mongoose.models.doctor || mongoose.model("doctor", doctorSchema); 
 export default doctorModel;
